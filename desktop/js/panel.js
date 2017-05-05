@@ -288,6 +288,8 @@ function addCmdToTable(_cmd) {
 					 
 				},
 				
+				
+				
  	
 			
 			tooltip: {
@@ -372,7 +374,7 @@ function addCmdToTable(_cmd) {
 			
 		options.title.text = data_module.result.name_module;
 		options.subtitle.text = data_module.result.type_graph;
-		
+
 		switch (data_module.result.type_graph)
 		{
 		   case 'Température':

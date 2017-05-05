@@ -1,0 +1,10 @@
+ 	{
+	"id" : "graphs",
+	"name" : "Graphique Netatmo",
+	"description" : "Plugin qui permet de visualiser les graphiquea des différentes sondes Netatmo",
+	"licence" : "AGPL",
+	"author" : "zyg0m4t1k",
+	"require" : "2.4",
+	"display" : "panel",
+	"category" : "monitoring"
+}
