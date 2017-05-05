@@ -1,8 +1,12 @@
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+
+
 
 <?php
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 require_once dirname(__FILE__) . '/../../3rparty/src/Netatmo/autoload.php';
+
+
 $config = array(
 			'client_id' => config::byKey('client_id', 'graphs'),
 			'client_secret' => config::byKey('client_secret', 'graphs'),
@@ -10,7 +14,9 @@ $config = array(
 			'password' => config::byKey('password', 'graphs'),
 			'scope' => 'read_station'
 				);
+
 $client = new  Netatmo\Clients\NAWSApiClient($config);
+
 try
 {
     $tokens = $client->getAccessToken();
@@ -19,9 +25,12 @@ catch(NAClientException $ex)
 {
     log::add('graphs','error','erreur: ' .$ex->getMessage());
 }
+
+
 $data = array();
 $data = graphs::getClient();
 graphs::getDataModule();	
+
 foreach($data['devices'] as $device)
 {
    	$name_module  = $device['station_name'];
@@ -34,11 +43,17 @@ foreach($data['devices'] as $device)
 	$tempmax_module = $device['dashboard_data']['max_temp'];
 	$tempmin_module = $device['dashboard_data']['min_temp'];
 }
+
 /*$type = "temperature,humidity,Co2";
 $measure = $client->getMeasure($device['_id'], Null, "1hour" , $type, time() - 24*3600*30, time(), 1024,  FALSE, FALSE);
 $measure = json_encode($measure); 
+
 $measure2 = $client->getMeasure('70:ee:50:00:71:2e', '02:00:00:00:81:1a', "1hour" , $type, time() - 24*3600*30, time(), 1024,  FALSE, FALSE);
 $measure2 = json_encode($measure2); */
+
+
+
+
 ?>
 
 <div class="panel">
@@ -138,6 +153,7 @@ $measure2 = json_encode($measure2); */
     </div>
 </div>
 
+
 <script type="text/javascript">
 		$(' aside .battery ').hide();
 		$( ' .strong_max ' ).css({
@@ -184,9 +200,11 @@ $measure2 = json_encode($measure2); */
 		});	
 	
 </script>
+
 <?php include_file('desktop', 'style', 'css', 'graphs');?>
 <?php include_file('desktop', 'panel', 'js', 'graphs');?>
 <?php include_file('3rparty', 'datepicker_fr', 'js', 'graphs');?>
+
 <?php 
 if ($_SESSION['user']->getOptions('desktop_highcharts_theme') != '') {
 	try {
@@ -196,3 +214,15 @@ if ($_SESSION['user']->getOptions('desktop_highcharts_theme') != '') {
 	}
 }
 ?>
+
+</body>
+</html>
+
+<style>
+
+</style>
+
+
+
+
+	
