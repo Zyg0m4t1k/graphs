@@ -148,8 +148,6 @@ function addCmdToTable(_cmd) {
     $( "#select_date_end" ).datepicker( "option",
         $.datepicker.regional['fr']
 	);
-	  
-	
 	$('#select_date_begin').datepicker({
 			format: 'd/m/Y',
 			timepicker:false,
@@ -162,7 +160,6 @@ function addCmdToTable(_cmd) {
 		}
 	);
 	
-	
 	$('#select_date_end').datepicker({
 			format: 'd/m/Y',
 			timepicker:false,
@@ -173,7 +170,44 @@ function addCmdToTable(_cmd) {
 				
 			}
 		}
-	);
+	);	
+	
+	//$('#compare_date_start').datepicker({
+//			format: 'd/m/Y',
+//			timepicker:false,
+//			onClose: function(dateString) {
+//				var myDate = $('#compare_date_start' ).datepicker('getDate') / 1000 ;
+//				console.log( myDate );
+//				$('#timestamp_start_compare').attr({value : myDate});
+//				
+//			}
+//		}
+//	);	
+//	
+//    $( "#compare_date_start" ).datepicker( "option",
+//        $.datepicker.regional['fr']
+//	);	  
+//	
+//    $( "#compare_date_end" ).datepicker( "option",
+//        $.datepicker.regional['fr']
+//	);	
+//		
+//
+//	
+//	$('#compare_date_end').datepicker({
+//			format: 'd/m/Y',
+//			timepicker:false,
+//			onClose: function(dateString) {
+//				var myDate = $('#scompare_date_end' ).datepicker('getDate') / 1000 ;
+//				console.log( myDate );
+//				$('#timestamp_end_compare').attr({value : myDate});
+//				
+//			}
+//		}
+//	);		
+
+	
+
 	
 		
 	

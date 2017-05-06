@@ -107,3 +107,8 @@ select {
 	text-align:center;
 	
 }
+
+.ui-datepicker-title {
+
+   color: gray;
+ }
