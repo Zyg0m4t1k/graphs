@@ -18,7 +18,6 @@
 
 /* * ***************************Includes********************************* */
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
-//require_once dirname(__FILE__) . '/../../3rparty/src/Constants/AppliCommonPublic.php';
 require_once dirname(__FILE__) . '/../../3rparty/src/Netatmo/autoload.php';
 
 class graphs extends eqLogic {
@@ -141,8 +140,6 @@ class graphs extends eqLogic {
 	
 	
 	public function getStatus($status) {
-		
-		
 		if($status >= 90) return 'signal_verylow.png';
 		if($status >= 80) return 'signal_low.png';
 		if($status >= 70) return 'signal_medium.png';
@@ -172,7 +169,6 @@ class graphs extends eqLogic {
 			
 			//Indoor Module
 			case "NAModule4": return $type = 'module_int';break;
-	
 		}		
 	}
 	
@@ -250,7 +246,6 @@ class graphs extends eqLogic {
 		} else {
 			$data_module['name_module'] = $data_module['name_device'];
 		}
-		log::add('graphs','debug', 'data_module: ' . print_r($data_module, true));		
 		return($data_module);	
 	}
 

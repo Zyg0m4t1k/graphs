@@ -55,19 +55,19 @@ $measure2 = json_encode($measure2); */
                         <div class="strong"><img src="plugins/graphs/doc/images/sonde.png"><strong><?php echo $temp_module ; ?></strong><span class="unit">°C</span></div>
                      </div>  
                      <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 temp_max_left">
-                     	<div class="strong_max">Max: <?php echo $tempmax_module ; ?>°C</div>
+                     	<div class="strong_max">Max: <span style="color:#DC143C"><?php echo $tempmax_module ; ?></span>°C</div>
                      </div>
                      <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 temp_min_left">
-                        <div class="strong_min">Min: <?php echo $tempmin_module ; ?>°C</div> 
+                        <div class="strong_min">Min:<span style="color:#00008B"> <?php echo $tempmin_module ; ?></span>°C</div> 
                      </div>
                 </div>
                 <hr />
                 <div class="row">
                     	<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 hide_c02">	
-                			<div class="strong"><img src="plugins/graphs/doc/images/Co2.png"><?php echo $CO2_module ; ?><span class="unit">ppm</span></div>  
+                			<div class="strong"><img src="plugins/graphs/doc/images/Co2.png"><span style="color:#191970"><?php echo $CO2_module ; ?><span class="unit">ppm</span></span></div>  
                         </div>
                         <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 humidity_left">
-                        	  <div class="strong"><img src="plugins/graphs/doc/images/humidity.png"><?php echo $hum_module ; ?><span class="unit">%</span></div>
+                        	  <div class="strong"><img src="plugins/graphs/doc/images/humidity.png"><span style="color:#00FFFF"><?php echo $hum_module ; ?><span class="unit">%</span></span></div>
                         </div>
 
                
@@ -75,10 +75,10 @@ $measure2 = json_encode($measure2); */
                 <hr />
                 <div class="row">
                     	<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 ">
-                       		<div class="strong"><img src="plugins/graphs/doc/images/decibel.png"><strong><?php echo $noise_module ; ?></strong><span class="unit">db</span></div>
+                       		<div class="strong"><img src="plugins/graphs/doc/images/decibel.png"><strong style="color:#B0C4DE"><?php echo $noise_module ; ?></strong><span class="unit">db</span></div>
                         </div>
                         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                        	<div class="strong"><img src="plugins/graphs/doc/images/barometre.png"><strong><?php echo $pressure_module ; ?></strong><span class="unit">mbar</span></div> 
+                        	<div class="strong"><img src="plugins/graphs/doc/images/barometre.png"><strong style="color:#D87093"><?php echo $pressure_module ; ?></strong><span class="unit">mbar</span></div> 
                         </div>                    
                 </div>
                 <hr />
@@ -92,8 +92,8 @@ $measure2 = json_encode($measure2); */
                 </div>               
             </aside>
         </div>
-        <section class="col-lg-8 col-md-8 col-sm-7">
-                     <div class="col-lg-6 col-md-6 col-sm-6">
+        <section class="col-lg-8 col-md-8 col-sm-8">
+                     <div class="col-lg-5 col-md-6 col-sm-6">
                         <select mame="modules" id="modules" class="select_modules">
                         <?php
                         foreach (graphs::treeById('graphs') as $graphs) {			
@@ -106,35 +106,53 @@ $measure2 = json_encode($measure2); */
                         </select> 
 
                         <select mame="module_option" id="module_option" class="select">
-                            <option value="3hours" id="hours" class="time_option" >3 heures</option> <!--3hours-->
-                            <option value="1day" id="day" class="time_option">1 jour</option> <!--1day-->
-                            <option value="1week" id="week" class="time_option">1 semaine</option> <!--1 semaine-->
-                            <option value="1month" id="month" class="time_option">1 mois</option> <!--1 mois-->
+                            <option value="3hours" id="hours" class="time_option" >{{3 heures}}</option> <!--3hours-->
+                            <option value="1day" id="day" class="time_option">{{1 jour}}</option> <!--1day-->
+                            <option value="1week" id="week" class="time_option">{{1 semaine}}</option> <!--1 semaine-->
+                            <option value="1month" id="month" class="time_option">{{1 mois}}</option> <!--1 mois-->
                         </select> 
                      </div>
 
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                         <label for="startDate">Du :</label>
+                    <div class="col-lg-5 col-md-6 col-sm-6">
+                         <label for="startDate">{{Du :}}</label>
                          <input name="startDate" id="select_date_begin" class="select_date" />  
                          <input type="hidden" id="timestamp_start"  value=""  />                     
-                         <label for="endDate">au :</label>
+                         <label for="endDate">{{au :}}</label>
                          <input name="endDate" id="select_date_end" class="select_date" /> 
                          <input type="hidden" id="timestamp_end" value=""   />                	
-                    </div> 
-
-        </section>
-		<section class="graph col-lg-8 col-md-7 col-sm-7">
-        		<div id="container1" class="col-lg-12 col-md-12 col-sm-12" ></div>
-                
-                <div style="text-align:center;" class="graph col-lg-12 col-md-12 col-sm-12">
-                        <button id="temp" name="Température">temp</button>
-                        <button id="hum" name="Humidité">hum</button>
-                        <button id="co2" name="C02">c02</button>
-                        <button id="Pressure" name="Pression">Pressure</button>
-                        <button id="Noise" name="Bruit">Noise</button>
-                    </div>
-               </div>       
-        </section>     
+                    </div>                    
+                    <div class="graph col-lg-12 col-md-12 col-sm-12">
+                            <div id="container1" class="col-lg-12 col-md-12 col-sm-12" ></div>
+                            
+                            <div style="text-align:center;" class="graph col-lg-12 col-md-12 col-sm-12">
+                                    <button id="temp" name="Température">temp</button>
+                                    <button id="hum" name="Humidité">hum</button>
+                                    <button id="co2" name="C02">c02</button>
+                                    <button id="Pressure" name="Pression">Pressure</button>
+                                    <button id="Noise" name="Bruit">Noise</button>
+                           </div>       
+                    </div>                      
+                                        
+        </section>  
+<!--		<div class="compare_sonde col-lg-2 col-md-2 col-sm-2 col-xs-12 ">  
+                <div class="form-group">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                         <label class="control-label">{{Comparaison}}</label> 
+                         <input type="checkbox" class="compareAttr"/>
+                    </div>                 
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                     <label for="startDate">{{Mois :}}</label>
+                     <input name="startDate" id="compare_date_start" class="select_date" />  
+                     <input type="hidden" id="timestamp_start_compare"  value=""  />                     
+                </div>  
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                     <label for="endDate">{{Mois :}}</label>
+                     <input name="endDate" id="compare_date_end" class="select_date" /> 
+                     <input type="hidden" id="timestamp_end_compare" value=""   />
+                </div>      
+        
+        </div>  -->       
     </div>
 </div>
 
@@ -182,6 +200,14 @@ $measure2 = json_encode($measure2); */
 				
 			}
 		});	
+		
+//$("body").undelegate(".compareAttr", 'change ').delegate('.compareAttr','change ', function () {
+//    if ($(this).value() == 1) {
+//       $('#cron_speedtest').hide();
+//    } else {
+//        $('#cron_speedtest').hide();
+//    }
+//});		
 	
 </script>
 <?php include_file('desktop', 'style', 'css', 'graphs');?>
