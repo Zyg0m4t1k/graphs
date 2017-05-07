@@ -1,0 +1,27 @@
+﻿
+
+Il faut télécharger le plugin sur le market. 
+
+image::../images/graphs_icon.png[align="center"]
+
+
+Après l'avoir activer il faut ensuite aller dans Plugins/Gestions des plugins et cliquer sur l'icône du plugin
+
+
+Remplir les champs selon vos informations et sauvegarder.
+
+image::../images/config_netatmo.png[align="center"]
+
+Cocher activer le panel et enregistrer.
+
+Pour voir les informations.
+
+image::../images/netatmo1.png[align="center"]
+
+Et ainsi visualiser les données Netatmo sous forme de graphique
+
+image::../images/netatmo_screen.png[align="center"]
+
+[NOTE]
+Le thème du graph est celui que vous avez choisi dans votre profil.
+Le plugin ne crée pas de commandes.
