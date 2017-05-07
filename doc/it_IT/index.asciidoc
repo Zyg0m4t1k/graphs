@@ -1,0 +1,12 @@
+﻿== Plugin Graphs
+
+=== Présentation
+Ce plugin permet de générer des graphiques des sondes Netatmo
+
+'''
+=== Installation/Configuration
+include::configuration.asciidoc[]
+
+'''
+=== Changelog
+include::changelog.asciidoc[]
