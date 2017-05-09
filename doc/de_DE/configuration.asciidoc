@@ -1,27 +1,27 @@
 ﻿
 
-Il faut télécharger le plugin sur le market. 
+Sie müssen das Plugin von dem Markt herunterladen. 
 
 image::../images/graphs_icon.png[align="center"]
 
 
-Après l'avoir activer il faut ensuite aller dans Plugins/Gestions des plugins et cliquer sur l'icône du plugin
+Nachdem es aktiviert wurde, gehen Sie dann auf Plugins/Plugin Verwaltung und klicken auf das Piktogramm des Plugins
 
 
-Remplir les champs selon vos informations et sauvegarder.
+Füllen Sie die Felder mit Ihren Angaben aus und speichern.
 
 image::../images/config_netatmo.png[align="center"]
 
-Cocher activer le panel et enregistrer.
+Panel aktivieren ankreuzen und abspeichern.
 
-Pour voir les informations.
+Um die Informationen anzuzeigen.
 
 image::../images/netatmo1.png[align="center"]
 
-Et ainsi visualiser les données Netatmo sous forme de graphique
+Und Sie sehen die Netatmo Daten als Diagramm
 
 image::../images/netatmo_screen.png[align="center"]
 
 [NOTE]
-Le thème du graph est celui que vous avez choisi dans votre profil.
-Le plugin ne crée pas de commandes.
+Das Thema des Diagramms ist welches, was Sie in Ihrem Profil gewählt haben. 
+Das Plugin erzeugt keine Befehle. 
