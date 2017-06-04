@@ -29,7 +29,7 @@ class graphs extends eqLogic {
 			'client_secret' => config::byKey('client_secret', 'graphs'),
 			'username' => config::byKey('username', 'graphs'),
 			'password' => config::byKey('password', 'graphs'),
-			'scope' => 'read_station'
+			'scope' => 'read_station read_thermostat'
 		);
 		
 		$client = new  Netatmo\Clients\NAWSApiClient($config);
@@ -195,7 +195,7 @@ class graphs extends eqLogic {
 			'client_secret' => config::byKey('client_secret', 'graphs'),
 			'username' => config::byKey('username', 'graphs'),
 			'password' => config::byKey('password', 'graphs'),
-			'scope' => 'read_station'
+			'scope' => 'read_station read_thermostat'
 				);
 		$client = new  Netatmo\Clients\NAWSApiClient($config);
 		try
