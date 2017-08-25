@@ -1,4 +1,5 @@
 ﻿[horizontal]
+25.08.2017:: Correction du bug d'affichage
 04.06.2017:: Suppression du bootstrap switch
 05.05.2017:: Mise à jour et dispo sur le market
 
