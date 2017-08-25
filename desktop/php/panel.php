@@ -122,7 +122,7 @@ $measure2 = json_encode($measure2); */
                          <input type="hidden" id="timestamp_end" value=""   />                	
                     </div>                    
                     <div class="graph col-lg-12 col-md-12 col-sm-12">
-                            <div id="container1" class="col-lg-12 col-md-12 col-sm-12" ></div>
+                            <div id="container" ></div>
                             
                             <div style="text-align:center;" class="graph col-lg-12 col-md-12 col-sm-12">
                                     <button id="temp" name="Température">temp</button>
@@ -198,8 +198,10 @@ $measure2 = json_encode($measure2); */
 				}
 				createGraph(data)
 				
-			}
-		});	
+
+						
+					}
+				});	
 		
 //$("body").undelegate(".compareAttr", 'change ').delegate('.compareAttr','change ', function () {
 //    if ($(this).value() == 1) {
