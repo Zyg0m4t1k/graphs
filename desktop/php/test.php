@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 <?php
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
@@ -39,7 +38,11 @@ $measure = $client->getMeasure($device['_id'], Null, "1hour" , $type, time() - 2
 $measure = json_encode($measure); 
 $measure2 = $client->getMeasure('70:ee:50:00:71:2e', '02:00:00:00:81:1a', "1hour" , $type, time() - 24*3600*30, time(), 1024,  FALSE, FALSE);
 $measure2 = json_encode($measure2); */
+
 ?>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 
 <div class="panel">
 	<header class="title_bar row">
@@ -83,7 +86,7 @@ $measure2 = json_encode($measure2); */
                 </div>
                 <hr />
                 <div class="row">
-                			<div class="strong">status : <img src="plugins/graphs/doc/icone/signal_full.png"> </div>  
+                			<div class="strong">status : <img src="../../doc/icone/signal_full.png"> </div>  
 
                 </div> 
                 <hr />
@@ -122,7 +125,7 @@ $measure2 = json_encode($measure2); */
                          <input type="hidden" id="timestamp_end" value=""   />                	
                     </div>                    
                     <div class="graph col-lg-12 col-md-12 col-sm-12">
-                            <div id="container" ></div>
+                            <div id="container" class="col-lg-12 col-md-12 col-sm-12" ></div>
                             
                             <div style="text-align:center;" class="graph col-lg-12 col-md-12 col-sm-12">
                                     <button id="temp" name="Température">temp</button>
@@ -155,8 +158,9 @@ $measure2 = json_encode($measure2); */
         </div>  -->       
     </div>
 </div>
+<script>
 
-<script type="text/javascript">
+
 		$(' aside .battery ').hide();
 		$( ' .strong_max ' ).css({
 			marginLeft : '15px'
@@ -165,7 +169,7 @@ $measure2 = json_encode($measure2); */
 		var device_id =$('.option_id:eq(0)').attr('value'),
 			module_id = 0,
 			scale = '1day',
-			type = 'min_temp,max_temp',
+			type = 'min_temp',
 			date_begin = parseInt(Math.round(+new Date() / 1000) - 24*3600*30 ) ,		
 			date_end = Math.round(+new Date() / 1000),
 			limit = 1024,
@@ -174,7 +178,7 @@ $measure2 = json_encode($measure2); */
 					
 			$.ajax({
 			type: 'POST',
-			url: 'plugins/graphs/core/ajax/graphs.ajax.php',
+			url: '../../core/ajax/graphs.ajax.php ',
 			data: {
 				action: 'getDataModule',
 				device_id: device_id,
@@ -189,38 +193,45 @@ $measure2 = json_encode($measure2); */
 			},
 			dataType: 'json',
 			error: function (request, status, error) {
-				handleAjaxError(request, status, error);
+				//handleAjaxError(request, status, error);
 			},
 			success: function (data) {
 				
 				if (data.state != 'ok') {
 					return;
 				}
-				createGraph(data)
+				//createGraph(data)
 				
+ 			var charts = {
+				renderTo: 'container',
+				zoomType: 'x',
+				type: 'line'
+			}
+			
+        var series = {
 
+            cursor: 'pointer',
+            data: data.result.infos
+
+        };
+		
+		new Highcharts.Chart({
+						chart: charts,
+						title: {
+							text: ''
+						},
+						credits: {
+							text: '',
+							href: '',
+						},
+		
+						series: [series]
+					});
+		
+						
+						
 						
 					}
-				});	
-		
-//$("body").undelegate(".compareAttr", 'change ').delegate('.compareAttr','change ', function () {
-//    if ($(this).value() == 1) {
-//       $('#cron_speedtest').hide();
-//    } else {
-//        $('#cron_speedtest').hide();
-//    }
-//});		
-	
-</script>
-<?php include_file('desktop', 'style', 'css', 'graphs');?>
-<?php include_file('desktop', 'panel', 'js', 'graphs');?>
-<?php include_file('3rparty', 'datepicker_fr', 'js', 'graphs');?>
-<?php 
-if ($_SESSION['user']->getOptions('desktop_highcharts_theme') != '') {
-	try {
-		include_file('3rdparty', 'highstock/themes/' . $_SESSION['user']->getOptions('desktop_highcharts_theme'), 'js');
-	} catch (Exception $e) {
-
-	}
-}
-?>
+				});		
+		</script>
+   

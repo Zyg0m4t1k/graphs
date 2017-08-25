@@ -289,7 +289,7 @@ function addCmdToTable(_cmd) {
 	
 		var options = {
 			chart: {
-				renderTo: 'container1',
+				renderTo: 'container',
 				zoomType: 'xy',
 				type: 'line'
 			},
