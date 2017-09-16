@@ -19,12 +19,13 @@
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 function graphs_install() {
-    
+
 }
 
 function graphs_update() {
-    
+	graphs::cronHourly();
 }
+
 
 
 function graphs_remove() {

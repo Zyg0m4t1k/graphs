@@ -79,6 +79,7 @@ class graphs extends eqLogic {
 				$eqLogic->save();
 			}
 		}
+		self::cronHourly();
 	}
 	
 	public function getDataModule() {
@@ -264,19 +265,114 @@ class graphs extends eqLogic {
      */
 
 
-    /*
-     * Fonction exécutée automatiquement toutes les heures par Jeedom
+    //Fonction exécutée automatiquement toutes les heures par Jeedom
+	
+//      public static function cronHourly() {
+//		  log::add('graphs', 'debug', 'cronHourly');
+//		$config = array(
+//			'client_id' => config::byKey('client_id', 'graphs'),
+//			'client_secret' => config::byKey('client_secret', 'graphs'),
+//			'username' => config::byKey('username', 'graphs'),
+//			'password' => config::byKey('password', 'graphs'),
+//			'scope' => 'read_station read_thermostat'
+//				);
+//		$client = new  Netatmo\Clients\NAWSApiClient($config);
+//	
+//		$files = array('year','month');
+//		$delay = array('1month','1day');
+//		$k=0;
+//		foreach ($files as $file) {
+//			$path = dirname(__FILE__) . '/../../data/' . $file .'.json';
+//			if (!file_exists($path)) {
+//				log::add('graphs', 'debug', 'fichier existe pas');
+//
+//			} 	
+//			$datas = array();
+//			$eqLogics = eqLogic::byType('graphs');
+//			$j = 0;
+//			foreach ( $eqLogics as $eqLogic) {
+//				for ($i = 0; $i <= 100 ; $i++) {
+//					$year = date('Y') - $i;
+//					$begin = new DateTime('first day of January ' . $year);
+//					$begin= $begin->getTimestamp();
+//					$end = new DateTime('last day of December ' . $year);
+//					$end = $end->getTimestamp() + 23*3600;	
+//					$measure = $client->getMeasure( $eqLogics[0]->getLogicalId(), $eqLogic->getLogicalId(), $delay[$k],'Temperature,Humidity,Pressure,Noise,CO2,max_temp,min_temp,max_hum,min_hum,date_max_temp,date_min_temp,date_max_hum,date_min_hum', $begin, $end, 1024, FALSE, FALSE);
+//					$datas[$j]['name'] = $eqLogics[$j]->getName() ;
+//					$datas[$j]['module_id'] = $eqLogics[$j]->getLogicalId() ;
+//					$datas[$j]['device_id'] = $eqLogics[$j]->getLogicalId() ;
+//					if ($measure != null) {
+//						$datas[$j]['year'][$year] = $measure;
+//					} else {
+//						break;
+//					}
+//				}
+//				$j++;	
+//			}
+//			file_put_contents(dirname(__FILE__) . '/../../data/' . $file .'.json', json_encode($datas));	
+//			$k++;
+//			}	
+//			log::add('graphs', 'debug', 'Fin cronHourly');	  
+//      }
+     
+
+    
       public static function cronHourly() {
+		  log::add('graphs', 'debug', 'cronHourly');
+		$config = array(
+			'client_id' => config::byKey('client_id', 'graphs'),
+			'client_secret' => config::byKey('client_secret', 'graphs'),
+			'username' => config::byKey('username', 'graphs'),
+			'password' => config::byKey('password', 'graphs'),
+			'scope' => 'read_station read_thermostat'
+				);
+		$client = new  Netatmo\Clients\NAWSApiClient($config);
+	
+		$files = array('year','month');
+		$delay = array('1month','1day');
+		$k=0;
+		foreach ($files as $file) {
+			$path = dirname(__FILE__) . '/../../data/' . $file .'.json';
+			if (!file_exists($path)) {
+				log::add('graphs', 'debug', 'fichier existe pas');
 
+			} 	
+			$datas = array();
+			$eqLogics = eqLogic::byType('graphs');
+			$j = 0;
+			foreach ( $eqLogics as $eqLogic) {
+				for ($i = 0; $i <= 100 ; $i++) {
+					$year = date('Y') - $i;
+					$begin = new DateTime('first day of January ' . $year);
+					$begin= $begin->getTimestamp();
+					$end = new DateTime('last day of December ' . $year);
+					$end = $end->getTimestamp() + 23*3600;	
+					$measure = $client->getMeasure( $eqLogics[0]->getLogicalId(), $eqLogic->getLogicalId(), $delay[$k],'Temperature,Humidity,Pressure,Noise,CO2,max_temp,min_temp,max_hum,min_hum,date_max_temp,date_min_temp,date_max_hum,date_min_hum', $begin, $end, 1024, FALSE, FALSE);
+					$datas[$j]['name'] = $eqLogics[$j]->getName() ;
+					$datas[$j]['module_id'] = $eqLogics[$j]->getLogicalId() ;
+					$datas[$j]['device_id'] = $eqLogics[$j]->getLogicalId() ;
+					if ($measure != null) {
+						$datas[$j]['year'][$year] = $measure;
+					} else {
+						break;
+					}
+				}
+				$j++;	
+			}
+			$data_path = realpath(dirname(__FILE__) . '/../../data');
+			if (!is_dir($data_path)) {
+				com_shell::execute(system::getCmdSudo() . 'mkdir ' . dirname(__FILE__) . '/../../data' . ' > /dev/null 2>&1;');
+				com_shell::execute(system::getCmdSudo() . 'chmod 777 -R ' . dirname(__FILE__) . '/../../data' . ' > /dev/null 2>&1;');
+			} else {
+				com_shell::execute(system::getCmdSudo() . 'chmod 777 -R ' . dirname(__FILE__) . '/../../data' . ' > /dev/null 2>&1;');
+			}			
+			
+			file_put_contents(dirname(__FILE__) . '/../../data/' . $file .'.json', json_encode($datas));	
+			$k++;
+			}	
+			log::add('graphs', 'debug', 'Fin cronHourly');	 		  
       }
-     */
-
-    /*
-     * Fonction exécutée automatiquement tous les jours par Jeedom
-      public static function cronDayly() {
-
-      }
-     */
+    
 
 
 
