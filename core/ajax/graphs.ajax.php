@@ -34,6 +34,24 @@ try {
 		ajax::success($return);
     }
 	
+	if (init('action') == 'getData') {
+		$type = init('type');
+		$path = dirname(__FILE__) . '/../../data/' . $type . '.json';
+		if (!file_exists($path)) {
+			log::add('graphs', 'debug', 'pas trovue le fichier');
+			return array();
+		}	else {
+			log::add('graphs', 'debug', 'fichier ok');
+		}
+		com_shell::execute(system::getCmdSudo() . 'chmod 777 ' . $path) ;
+		$lines = explode("\n", trim(file_get_contents($path)));
+		$result = array();
+		foreach ($lines as $line) {
+			$result[] = json_decode($line, true);
+		}
+		ajax::success($result);
+	}
+		
 	throw new Exception(__('Aucune methode correspondante à : ', __FILE__) . init('action'));
 	/*     * *********Catch exeption*************** */
 } catch (Exception $e) {

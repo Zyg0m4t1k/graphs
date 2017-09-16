@@ -112,3 +112,11 @@ select {
 
    color: gray;
  }
+ 
+ td , tr , th {
+	 text-align:center;
+ }
+ 
+ td {
+	 font-weight: bold;
+ }
