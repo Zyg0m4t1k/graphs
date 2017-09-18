@@ -319,6 +319,17 @@ class graphs extends eqLogic {
     
       public static function cronHourly() {
 		  log::add('graphs', 'debug', 'cronHourly');
+		$path = dirname(__FILE__) . '/../../data';
+		if (!is_dir($path)) {
+			 log::add('graphs', 'debug', 'data existe pas');
+			com_shell::execute(system::getCmdSudo() . 'mkdir ' . dirname(__FILE__) . '/../../data' . ' > /dev/null 2>&1;');
+			com_shell::execute(system::getCmdSudo() . 'chmod 777 -R ' . dirname(__FILE__) . '/../../data' . ' > /dev/null 2>&1;');
+			 log::add('graphs', 'debug', 'data crééé');
+		} else {
+			 log::add('graphs', 'debug', 'data existe ');
+			com_shell::execute(system::getCmdSudo() . 'chmod 777 -R ' . dirname(__FILE__) . '/../../data' . ' > /dev/null 2>&1;');
+			 log::add('graphs', 'debug', 'droit sudo');
+		}		  
 		$config = array(
 			'client_id' => config::byKey('client_id', 'graphs'),
 			'client_secret' => config::byKey('client_secret', 'graphs'),
@@ -332,11 +343,6 @@ class graphs extends eqLogic {
 		$delay = array('1month','1day');
 		$k=0;
 		foreach ($files as $file) {
-			$path = dirname(__FILE__) . '/../../data/' . $file .'.json';
-			if (!file_exists($path)) {
-				log::add('graphs', 'debug', 'fichier existe pas');
-
-			} 	
 			$datas = array();
 			$eqLogics = eqLogic::byType('graphs');
 			$j = 0;
@@ -359,14 +365,6 @@ class graphs extends eqLogic {
 				}
 				$j++;	
 			}
-			$data_path = realpath(dirname(__FILE__) . '/../../data');
-			if (!is_dir($data_path)) {
-				com_shell::execute(system::getCmdSudo() . 'mkdir ' . dirname(__FILE__) . '/../../data' . ' > /dev/null 2>&1;');
-				com_shell::execute(system::getCmdSudo() . 'chmod 777 -R ' . dirname(__FILE__) . '/../../data' . ' > /dev/null 2>&1;');
-			} else {
-				com_shell::execute(system::getCmdSudo() . 'chmod 777 -R ' . dirname(__FILE__) . '/../../data' . ' > /dev/null 2>&1;');
-			}			
-			
 			file_put_contents(dirname(__FILE__) . '/../../data/' . $file .'.json', json_encode($datas));	
 			$k++;
 			}	
