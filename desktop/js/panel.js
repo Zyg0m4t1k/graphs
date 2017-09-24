@@ -35,6 +35,7 @@
 		graphYear(module, type)
 	})
 	
+
 	$(".statistic_year a").click(function() {
 		$(' #graphics').hide();
 		$(' #statistics').show();
@@ -50,8 +51,11 @@
 			d = new Date(),
 			n = d.getFullYear();
 		console.log(module + ' ' + n)
-		getStatMonth(module, n)
+		getStatMonth(module, n,'tem')
 	})
+	
+	
+	
 	
 	$(".delay").click(function() {
 		var device_id = $('.option_id:eq(0)').attr('value'),
@@ -93,48 +97,6 @@
 			limit = '1024',
 			subtitle = 'Température';
 		ajaxRequest(device_id, module_id, scale, type, begin_date, end_date, limit, subtitle, real_time, info = true);
-		var type_station = $("#modules option:selected").attr('name');
-		if (type_station == 'NAModule1') {
-			$(' .Pressure ').hide();
-			$(' .Noise ').hide();
-			$(' .hide_c02 ').hide();
-			$(' .co2 ').hide();
-			$(' .strong_max ').css({
-				marginLeft: '15px'
-			});
-			$(' .humidity_left ').css({
-				marginLeft: '70px'
-			});
-			$(' aside .battery ').show();
-			$('#name_module').append('test');
-		}
-		if (type_station == 'NAModule4') {
-			$(' #Pressure ').hide();
-			$(' #Noise ').hide();
-			$(' #co2 ').show();
-			$(' .hide_c02 ').show();
-			$(' .strong_max ').css({
-				marginLeft: '15px'
-			});
-			$(' .humidity_left ').css({
-				marginLeft: '0'
-			});
-			(' aside .battery ').show();
-		}
-		if (type_station == 'NAMain') {
-			$(' .hide_c02 ').show();
-			$(' #Pressure ').show();
-			$(' #Noise ').show();
-			$(' .hide_c02 ').show();
-			$(' #co2 ').show();
-			$(' .strong_max ').css({
-				marginLeft: '15px'
-			});
-			$(' .humidity_left ').css({
-				marginLeft: '0'
-			});
-			$(' aside .battery ').hide();
-		}
 		$('ul.nav-tabs li.active').removeClass('active')
 		$(this).parent('li').addClass('active')
 		$('.btn-group button').removeClass('active');
@@ -531,10 +493,11 @@
 						});
 						return;
 					}
-					$(' .temp_module_left strong ').text(data.result.temperature_module);
-					$(' .strong_max ').text('Max:' + data.result.max_temp_module + '°C');
-					$(' .strong_min ').text('min:' + data.result.min_temp_module + '°C');
-					$(' .humidity_left').text(data.result.Humidity_module);
+					$('.temp_module_left,.temp_max_left,.temp_min_left,.humidity_left').empty();
+					$(' .temp_module_left').append(data.result.temperature_module);
+					$(' .temp_max_left ').append(data.result.max_temp_module);
+					$(' .temp_min_left ').append(data.result.min_temp_module);
+					$(' .humidity_left').append(data.result.Humidity_module);
 					if (data.result.type != 'NAMain') {
 						$(' aside .battery ').show();
 						$(' .battery img ').attr('src', 'plugins/graphs/doc/icone/' + data.result.battery_vp);
@@ -543,25 +506,19 @@
 					}
 					$(' .status img ').attr('src', 'plugins/graphs/doc/icone/' + data.result.rf_status);
 				}
-				switch (data.result.type) {
-					case 'NAMain':
-						$('#co2').show();
-						$('#Pressure').show();
-						$('#Noise').show();
-						$(' #info_co2').text(data.result.CO2_module);
-						break;
-					case 'NAModule1':
-						$('#co2').hide();
-						$('#Pressure').hide();
-						$('#Noise').hide();
-						break;
-					case 'NAModule4':
-						$('#co2').show();
-						$('#Pressure').hide();
-						$('#Noise').hide();
-						$('#info_co2').text(data.result.CO2_module);
-						break;
+				var type_station = data.result.type;
+				if (type_station == 'NAModule1') {
+					$(' .pressure,.noise,.co2 ').hide();
+					$('aside .battery').show();
 				}
+				if (type_station == 'NAModule4') {
+					$(' .pressure,.noise ').hide();
+					$(' .co2,aside .battery  ').show();
+				}
+				if (type_station == 'NAMain') {
+					$('.pressure,.noise,.co2').show();
+					$('aside .battery').hide();
+				}				
 				createGraph(data)
 			}
 		});
@@ -581,7 +538,7 @@
 			chart: {
 				renderTo: 'container',
 				zoomType: 'xy',
-				type: 'line',
+				type: 'spline',
 			},
 			title: {
 			},
@@ -831,18 +788,26 @@
 		}
 	}
 	
-	function getStatMonth(module, year) {
+	function getStatMonth(module, year , type) {
 		$('#container_stat').empty();
 		var monthNames = ['Jan', 'fev', 'mar', 'avr', 'mai', 'juin', 'jui', 'aou', 'sep', 'oct', 'nov', 'dec'],
 			NbrCol = 13, // nombre de colonnes
 			NbrLigne = 31, // nombre de lignes
 			div = "";
-		div += '<table border="1" width="90%"><thead>';
+		div += '<table border="1" width="100%"><thead>';
 		div += '<tr><th rowspan="2" style="background:#CCCCCC;">dates</th>';
 		for (i = 0; i < monthNames.length; i++) {
 			div += '<th colspan="2" style="background:#CCCCCC;"> ' + monthNames[i] + '</th>';
 		}
+		div += '<select class="form-control pull-right" id="sel_type" style="width: 140px;">';
+		if (type =='tem') {
+		div += '<option value="tem">{{Température}}</option><option value="hum">{{humidité}}</option></select>';
+		} else {
+		div += '<option value="hum">{{humidité}}</option><option value="tem">{{Température}}</option></select>';	
+		}
 		div += '</tr>';
+		
+		
 		div += '<tr>';
 		for (j = 1; j < 25; j++) {
 			if (j / 2 == Math.round(j / 2)) {
@@ -861,7 +826,7 @@
 			div += '</tr>';
 		}
 	
-		div += '</table>';
+		div += '</table >';
 		$("#container_stat").append(div);
 		$.ajax({
 			type: 'POST',
@@ -897,26 +862,31 @@
 						console.log(obj)
 						$.each(obj, function(i, e) {
 							var d = new Date(i * 1000);
-							var n = d.getDate();
-							var m = d.getMonth(),
+								n = d.getDate();
+								m = d.getMonth(),
 								q = (m + 1) * 2,
 								r = q - 1;
-							console.log(e[0])
-							var colorMin = colorTemp(e[6]),
-								colorMax = colorTemp(e[5]);
-							$("table tr." + n).find("td:eq(" + r + ")").append(e[6]);
+
+							switch (type) {
+								case 'tem': data_min=e[6];data_max=e[5],colorMin = colorTemp(e[6]),colorMax = colorTemp(e[5]);break;
+								case 'hum': data_min=e[8];data_max=e[7],colorMin = colorHumidity(e[8]),colorMax = colorHumidity(e[7]);break;
+							}
+							$("table tr." + n).find("td:eq(" + r + ")").append(data_min);
 							$("table tr." + n).find("td:eq(" + r + ")").css("background-color", colorMin);
-	
-							$("table tr." + n).find("td:eq(" + q + ")").append(e[5]);
+							$("table tr." + n).find("td:eq(" + q + ")").append(data_max);
 							$("table tr." + n).find("td:eq(" + q + ")").css("background-color", colorMax);
 						})
 					}
 				}
 				$(".menu_year button").click(function() {
-					var module = $(this).attr('value'),
 						year = $(this).attr('name');
-					getStatMonth(module, year)
+					getStatMonth(module, year, type)
 				})
+				$( "#sel_type" ).change(function() {
+					console.log($(this).val());
+				    getStatMonth(module, year, $(this).val());
+				});					
+				
 			}
 		});
 	}
@@ -953,7 +923,7 @@
 				var data = ['moy', 'maxi', 'mini'];
 				for (var k = 0; k < data.length; k++) {
 					div = '<div>';
-					div += '<table id="' + data[k] + '" class="table_stat" border="1" style="width:90%;margin:auto"><caption>' + info[k] + '</caption><thead><tr><th></th><th style="text-align:center">jan</th><th>Fev</th><th>Mar</th><th>Avr</th><th>mai</th><th>Jui</th><th>Jui</th><th>Aou</th><th>Sept</th><th>Oct</th><th>Nov</th><th>Déc</th><tr></thead>';
+					div += '<table id="' + data[k] + '" class="table_stat" border="1" style="width:100%;margin:auto"><caption>' + info[k] + '</caption><thead><tr><th></th><th style="text-align:center">jan</th><th>Fev</th><th>Mar</th><th>Avr</th><th>mai</th><th>Jui</th><th>Jui</th><th>Aou</th><th>Sept</th><th>Oct</th><th>Nov</th><th>Déc</th><tr></thead>';
 					div += '<tbody>';
 					var year = Object.keys(result[0]['year']).reverse();
 					for (var i = 0; i < year.length; i++) {

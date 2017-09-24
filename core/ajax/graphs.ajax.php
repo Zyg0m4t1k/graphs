@@ -28,6 +28,10 @@ try {
 		graphs::infoStation();
 		ajax::success();
 	}
+	if (init('action') == 'cronHourly') {
+		graphs::cronHourly();
+		ajax::success();
+	}	
 	
     if (init('action') == 'getDataModule') {
         $return = graphs::getDataGraph(init('device_id'),init('module_id'),init('scale'),init('type'),init('date_begin'),init('date_end'),init('limit'),init('subtitle'),init('real_time'));

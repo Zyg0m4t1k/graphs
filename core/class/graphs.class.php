@@ -29,7 +29,7 @@ class graphs extends eqLogic {
 			'client_secret' => config::byKey('client_secret', 'graphs'),
 			'username' => config::byKey('username', 'graphs'),
 			'password' => config::byKey('password', 'graphs'),
-			'scope' => 'read_station read_thermostat'
+			'scope' => 'read_station'
 		);
 		
 		$client = new  Netatmo\Clients\NAWSApiClient($config);
@@ -79,7 +79,6 @@ class graphs extends eqLogic {
 				$eqLogic->save();
 			}
 		}
-		self::cronHourly();
 	}
 	
 	public function getDataModule() {
@@ -342,9 +341,11 @@ class graphs extends eqLogic {
 		$files = array('year','month');
 		$delay = array('1month','1day');
 		$k=0;
+		
 		foreach ($files as $file) {
 			$datas = array();
 			$eqLogics = eqLogic::byType('graphs');
+			$device = config::byKey('deviceId', 'graphs');
 			$j = 0;
 			foreach ( $eqLogics as $eqLogic) {
 				for ($i = 0; $i <= 100 ; $i++) {
@@ -353,7 +354,7 @@ class graphs extends eqLogic {
 					$begin= $begin->getTimestamp();
 					$end = new DateTime('last day of December ' . $year);
 					$end = $end->getTimestamp() + 23*3600;	
-					$measure = $client->getMeasure( $eqLogics[0]->getLogicalId(), $eqLogic->getLogicalId(), $delay[$k],'Temperature,Humidity,Pressure,Noise,CO2,max_temp,min_temp,max_hum,min_hum,date_max_temp,date_min_temp,date_max_hum,date_min_hum', $begin, $end, 1024, FALSE, FALSE);
+					$measure = $client->getMeasure( $device, $eqLogic->getLogicalId(), $delay[$k],'Temperature,Humidity,Pressure,Noise,CO2,max_temp,min_temp,max_hum,min_hum,date_max_temp,date_min_temp,date_max_hum,date_min_hum', $begin, $end, 1024, FALSE, FALSE);
 					$datas[$j]['name'] = $eqLogics[$j]->getName() ;
 					$datas[$j]['module_id'] = $eqLogics[$j]->getLogicalId() ;
 					$datas[$j]['device_id'] = $eqLogics[$j]->getLogicalId() ;
