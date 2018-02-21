@@ -400,6 +400,7 @@
 				data2.push([i * 1000, e[1]]);
 			}
 		})
+		console.log(data1)
 		options.title.text = data_module.result.name_module;
 		options.subtitle.text = data_module.result.type_graph;
 		switch (data_module.result.type_graph) {

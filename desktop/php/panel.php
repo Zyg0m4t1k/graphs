@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 <?php
-require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
-require_once dirname(__FILE__) . '/../../3rparty/src/Netatmo/autoload.php';
+//require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
+//require_once dirname(__FILE__) . '/../../3rparty/src/Netatmo/autoload.php';
 $config = array(
 			'client_id' => config::byKey('client_id', 'graphs'),
 			'client_secret' => config::byKey('client_secret', 'graphs'),

@@ -18,7 +18,10 @@
 
 /* * ***************************Includes********************************* */
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
-require_once dirname(__FILE__) . '/../../3rparty/src/Netatmo/autoload.php';
+if (!class_exists('NAWSApiClient')) {
+	require_once dirname(__FILE__) . '/../../3rparty/src/Netatmo/autoload.php';
+}
+
 
 class graphs extends eqLogic {
 	
@@ -146,7 +149,7 @@ class graphs extends eqLogic {
 		if($status >= 60) return 'signal_high.png';
 		return 'signal_full.png';
 	}
-	
+
 	public function getWifi($wifi) {
 		if($wifi >= 100)return 'wifi_unknown.png';
 		if($wifi >= 86) return 'wifi_low.png';    
@@ -195,7 +198,7 @@ class graphs extends eqLogic {
 			'client_secret' => config::byKey('client_secret', 'graphs'),
 			'username' => config::byKey('username', 'graphs'),
 			'password' => config::byKey('password', 'graphs'),
-			'scope' => 'read_station read_thermostat'
+			'scope' => 'read_station'
 				);
 		$client = new  Netatmo\Clients\NAWSApiClient($config);
 		try
@@ -240,6 +243,10 @@ class graphs extends eqLogic {
 			$data_module['min_temp_module'] = $module->getConfiguration('min_temp');
 			$data_module['type'] = $module->getConfiguration('type');
 			$data_module['battery_vp'] = self::getBattery($module->getConfiguration('type'),$module->getConfiguration('battery_vp'));
+			log::add('graphs','debug', '----------------------------------------------');
+			log::add('graphs','debug', 'status: ' . $data_module['rf_status']);
+			log::add('graphs','debug', 'conf: ' . $module->getConfiguration('rf_status'));
+			log::add('graphs','debug', '----------------------------------------------');
 			$data_module['rf_status'] = self::getStatus($module->getConfiguration('rf_status'));
 			$data_module['wifi_status'] = self::getWifi($module->getConfiguration('wifi_status'));
 			
@@ -334,7 +341,7 @@ class graphs extends eqLogic {
 			'client_secret' => config::byKey('client_secret', 'graphs'),
 			'username' => config::byKey('username', 'graphs'),
 			'password' => config::byKey('password', 'graphs'),
-			'scope' => 'read_station read_thermostat'
+			'scope' => 'read_station'
 				);
 		$client = new  Netatmo\Clients\NAWSApiClient($config);
 	
