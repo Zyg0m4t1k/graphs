@@ -58,12 +58,6 @@ if (!isConnect()) {
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-2 control-label">{{Device ID}}</label>
-        <div class="col-sm-3">
-            <input type="text" class="configKey form-control" data-l1key="deviceId" placeholder="deviceId" disabled/>
-        </div>
-    </div>
-    <div class="form-group">
         <label class="col-lg-2 control-label">{{Synchroniser}}</label>
         <div class="col-lg-2">
         <a class="btn btn-default" id="bt_syncWithStation"><i class='fa fa-refresh'></i> {{Synchroniser mes équipements}}</a>

@@ -54,6 +54,7 @@ class graphs extends eqLogic {
 		$data = array();
 		$data = self::getClient();
 		log::add('graphs','debug', 'infostation: ' . print_r($data['devices'],true));
+		$array = array();
 		foreach($data['devices'] as $device) {
 			$eqLogic = eqLogic::byLogicalId($device['_id'], 'graphs');
 			if (!is_object($eqLogic)) {
@@ -64,24 +65,29 @@ class graphs extends eqLogic {
 			$eqLogic->setName($device['station_name']);
 			$eqLogic->setLogicalId($device['_id']);
 			$eqLogic->setConfiguration('type', 'station');
+			$eqLogic->setConfiguration('deviceId', $device['_id']);
 			$eqLogic->setCategory('heating', 1);
 			$eqLogic->setIsVisible(0);
 			$eqLogic->save();
-			config::save('deviceId', $device['_id'], 'graphs');
-			foreach ($device['modules'] as $module) {
-				$eqLogic = eqLogic::byLogicalId($module['_id'], 'graphs');
-				if (!is_object($eqLogic)) {
-					$eqLogic = new graphs();
+			if (count($device['modules']) >0) {
+				foreach ($device['modules'] as $module) {
+					$eqLogic = eqLogic::byLogicalId($module['_id'], 'graphs');
+					if (!is_object($eqLogic)) {
+						$eqLogic = new graphs();
+					}
+					$eqLogic->setEqType_name('graphs');
+					$eqLogic->setIsEnable(1);
+					$eqLogic->setName($module['module_name']);
+					$eqLogic->setLogicalId($module['_id']);
+					$eqLogic->setConfiguration('deviceId', $device['_id']);
+					$eqLogic->setCategory('heating', 1);
+					$eqLogic->setIsVisible(0);
+					$eqLogic->save();
 				}
-				$eqLogic->setEqType_name('graphs');
-				$eqLogic->setIsEnable(1);
-				$eqLogic->setName($module['module_name']);
-				$eqLogic->setLogicalId($module['_id']);
-				$eqLogic->setCategory('heating', 1);
-				$eqLogic->setIsVisible(0);
-				$eqLogic->save();
 			}
 		}
+
+		
 	}
 	
 	public function getDataModule() {
@@ -90,9 +96,9 @@ class graphs extends eqLogic {
 		log::add('graphs','debug', 'data_module: ' . print_r($data['devices'], true));
 		foreach($data['devices'] as $device) {
 			$eqLogic = eqLogic::byLogicalId($device["_id"], 'graphs');
-			$eqLogic->setConfiguration('wifi_status', $device['wifi_status']);
 			if (is_object($eqLogic)) {
 				$eqLogic->setConfiguration('type', $device['type']);
+				$eqLogic->setConfiguration('wifi_status', $device['wifi_status']);
 				if(isset($device['dashboard_data'])) {
 					foreach($device['dashboard_data'] as $key => $val) {
 						$eqLogic->setConfiguration($key, $val);
@@ -243,12 +249,13 @@ class graphs extends eqLogic {
 			$data_module['min_temp_module'] = $module->getConfiguration('min_temp');
 			$data_module['type'] = $module->getConfiguration('type');
 			$data_module['battery_vp'] = self::getBattery($module->getConfiguration('type'),$module->getConfiguration('battery_vp'));
-			log::add('graphs','debug', '----------------------------------------------');
-			log::add('graphs','debug', 'status: ' . $data_module['rf_status']);
-			log::add('graphs','debug', 'conf: ' . $module->getConfiguration('rf_status'));
-			log::add('graphs','debug', '----------------------------------------------');
-			$data_module['rf_status'] = self::getStatus($module->getConfiguration('rf_status'));
 			$data_module['wifi_status'] = self::getWifi($module->getConfiguration('wifi_status'));
+			if (array_key_exists('wifi_status', $data_module)) {
+				log::add('graphs','debug', '----------------------------------------------');
+				log::add('graphs','debug', 'conf: ' . $module->getConfiguration('rf_status'));
+				log::add('graphs','debug', '----------------------------------------------');
+				$data_module['rf_status'] = self::getStatus($module->getConfiguration('rf_status'));
+			}
 			
 		} else {
 			$data_module['name_module'] = $data_module['name_device'];
@@ -257,72 +264,7 @@ class graphs extends eqLogic {
 	}
 
 	
-	/*     * *************************Attributs****************************** */
-
-
-
-    /*     * ***********************Methode static*************************** */
-
-    /*
-     * Fonction exécutée automatiquement toutes les minutes par Jeedom
-      public static function cron() {
-
-      }
-     */
-
-
-    //Fonction exécutée automatiquement toutes les heures par Jeedom
 	
-//      public static function cronHourly() {
-//		  log::add('graphs', 'debug', 'cronHourly');
-//		$config = array(
-//			'client_id' => config::byKey('client_id', 'graphs'),
-//			'client_secret' => config::byKey('client_secret', 'graphs'),
-//			'username' => config::byKey('username', 'graphs'),
-//			'password' => config::byKey('password', 'graphs'),
-//			'scope' => 'read_station read_thermostat'
-//				);
-//		$client = new  Netatmo\Clients\NAWSApiClient($config);
-//	
-//		$files = array('year','month');
-//		$delay = array('1month','1day');
-//		$k=0;
-//		foreach ($files as $file) {
-//			$path = dirname(__FILE__) . '/../../data/' . $file .'.json';
-//			if (!file_exists($path)) {
-//				log::add('graphs', 'debug', 'fichier existe pas');
-//
-//			} 	
-//			$datas = array();
-//			$eqLogics = eqLogic::byType('graphs');
-//			$j = 0;
-//			foreach ( $eqLogics as $eqLogic) {
-//				for ($i = 0; $i <= 100 ; $i++) {
-//					$year = date('Y') - $i;
-//					$begin = new DateTime('first day of January ' . $year);
-//					$begin= $begin->getTimestamp();
-//					$end = new DateTime('last day of December ' . $year);
-//					$end = $end->getTimestamp() + 23*3600;	
-//					$measure = $client->getMeasure( $eqLogics[0]->getLogicalId(), $eqLogic->getLogicalId(), $delay[$k],'Temperature,Humidity,Pressure,Noise,CO2,max_temp,min_temp,max_hum,min_hum,date_max_temp,date_min_temp,date_max_hum,date_min_hum', $begin, $end, 1024, FALSE, FALSE);
-//					$datas[$j]['name'] = $eqLogics[$j]->getName() ;
-//					$datas[$j]['module_id'] = $eqLogics[$j]->getLogicalId() ;
-//					$datas[$j]['device_id'] = $eqLogics[$j]->getLogicalId() ;
-//					if ($measure != null) {
-//						$datas[$j]['year'][$year] = $measure;
-//					} else {
-//						break;
-//					}
-//				}
-//				$j++;	
-//			}
-//			file_put_contents(dirname(__FILE__) . '/../../data/' . $file .'.json', json_encode($datas));	
-//			$k++;
-//			}	
-//			log::add('graphs', 'debug', 'Fin cronHourly');	  
-//      }
-     
-
-    
       public static function cronHourly() {
 		  log::add('graphs', 'debug', 'cronHourly');
 		$path = dirname(__FILE__) . '/../../data';
@@ -352,7 +294,6 @@ class graphs extends eqLogic {
 		foreach ($files as $file) {
 			$datas = array();
 			$eqLogics = eqLogic::byType('graphs');
-			$device = config::byKey('deviceId', 'graphs');
 			$j = 0;
 			foreach ( $eqLogics as $eqLogic) {
 				for ($i = 0; $i <= 100 ; $i++) {
@@ -361,7 +302,7 @@ class graphs extends eqLogic {
 					$begin= $begin->getTimestamp();
 					$end = new DateTime('last day of December ' . $year);
 					$end = $end->getTimestamp() + 23*3600;	
-					$measure = $client->getMeasure( $device, $eqLogic->getLogicalId(), $delay[$k],'Temperature,Humidity,Pressure,Noise,CO2,max_temp,min_temp,max_hum,min_hum,date_max_temp,date_min_temp,date_max_hum,date_min_hum', $begin, $end, 1024, FALSE, FALSE);
+					$measure = $client->getMeasure( $eqLogic->getConfiguration('deviceId'), $eqLogic->getLogicalId(), $delay[$k],'Temperature,Humidity,Pressure,Noise,CO2,max_temp,min_temp,max_hum,min_hum,date_max_temp,date_min_temp,date_max_hum,date_min_hum', $begin, $end, 1024, FALSE, FALSE);
 					$datas[$j]['name'] = $eqLogics[$j]->getName() ;
 					$datas[$j]['module_id'] = $eqLogics[$j]->getLogicalId() ;
 					$datas[$j]['device_id'] = $eqLogics[$j]->getLogicalId() ;

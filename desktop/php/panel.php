@@ -8,7 +8,7 @@ $config = array(
 			'client_secret' => config::byKey('client_secret', 'graphs'),
 			'username' => config::byKey('username', 'graphs'),
 			'password' => config::byKey('password', 'graphs'),
-			'scope' => 'read_station'
+			'scope' => ''
 				);
 $client = new  Netatmo\Clients\NAWSApiClient($config);
 try
@@ -47,7 +47,7 @@ foreach($data['devices'] as $device)
         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 aside_data">
             	<div class="row">
                 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="strong"><img src="plugins/graphs/doc/images/sonde.png"><strong class="temp_module_left"><?php echo $temp_module ; ?></strong><span class="unit">°C</span></div>
+                        <div class="strong"><img src="plugins/graphs/docs/images/sonde.png"><strong class="temp_module_left"><?php echo $temp_module ; ?></strong><span class="unit">°C</span></div>
                      </div>  
                      <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 ">
                      	<div class="strong_max">Max: <span style="color:#DC143C" class="temp_max_left"><?php echo $tempmax_module ; ?></span>°C</div>
@@ -59,10 +59,10 @@ foreach($data['devices'] as $device)
                 <hr />
                 <div class="row">
                     	<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">	
-                			<div class="strong"><img src="plugins/graphs/doc/images/Co2.png"><span style="color:#191970"><?php echo $CO2_module ; ?><span class="unit">ppm</span></span></div>  
+                			<div class="strong"><img src="plugins/graphs/docs/images/Co2.png"><span style="color:#191970"><?php echo $CO2_module ; ?><span class="unit">ppm</span></span></div>  
                         </div>
                         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                        	  <div><img src="plugins/graphs/doc/images/humidite.png"><span style="color:#00FFFF" class="strong humidity_left"><?php echo $hum_module ; ?></span><span class="unit">%</span></div>
+                        	  <div><img src="plugins/graphs/docs/images/humidite.png"><span style="color:#00FFFF" class="strong humidity_left"><?php echo $hum_module ; ?></span><span class="unit">%</span></div>
                         </div>
 
                
@@ -70,20 +70,20 @@ foreach($data['devices'] as $device)
                 <hr />
                 <div class="row">
                     	<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 ">
-                       		<div class="strong"><img src="plugins/graphs/doc/images/decibel.png"><strong style="color:#B0C4DE"><?php echo $noise_module ; ?></strong><span class="unit">db</span></div>
+                       		<div class="strong"><img src="plugins/graphs/docs/images/decibel.png"><strong style="color:#B0C4DE"><?php echo $noise_module ; ?></strong><span class="unit">db</span></div>
                         </div>
                         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                        	<div class="strong"><img src="plugins/graphs/doc/images/barometre.png"><strong style="color:#D87093"><?php echo $pressure_module ; ?></strong><span class="unit">mbar</span></div> 
+                        	<div class="strong"><img src="plugins/graphs/docs/images/barometre.png"><strong style="color:#D87093"><?php echo $pressure_module ; ?></strong><span class="unit">mbar</span></div> 
                         </div>                    
                 </div>
                 <hr />
                 <div class="row">
-                			<div class="strong">status : <img src="plugins/graphs/doc/icone/signal_full.png"> </div>  
+                			<div class="strong">status : <img src="plugins/graphs/docs/icone/signal_full.png"> </div>  
 
                 </div> 
                 <hr />
                 <div class="row battery">
-                			<div class="strong">Batterie : <img src="plugins/graphs/doc/icone/battery_full.png"> </div>  
+                			<div class="strong">Batterie : <img src="plugins/graphs/docs/icone/battery_full.png"> </div>  
                 </div>               
         </div>
         <div class="col-lg-8 col-md-8 col-sm-8">
@@ -95,7 +95,7 @@ foreach($data['devices'] as $device)
                         foreach (graphs::treeById('graphs') as $graphs) {	
 
                           if (is_object($graphs)) {
-								echo '<li ><a href="#" value="'.$graphs->getLogicalId().'" class="option_id" name="'.$graphs->getConfiguration('type').'"><h5>' . $graphs->getName() .'</h5></a></li>';
+								echo '<li ><a href="#" data-type="'.$graphs->getConfiguration('deviceId').'" value="'.$graphs->getLogicalId().'" class="option_id" name="'.$graphs->getConfiguration('type').'"><h5>' . $graphs->getName() .'</h5></a></li>';
                             }	
 							 	
                         }

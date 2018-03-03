@@ -58,7 +58,7 @@
 	
 	
 	$(".delay").click(function() {
-		var device_id = $('.option_id:eq(0)').attr('value'),
+		var device_id = $('ul.nav-tabs li.active a').attr('data-type'),
 			module_id = $('ul.nav-tabs li.active a').attr('value');
 		current_scale = $(this).attr('id');
 		switch ($(this).attr('name')) {
@@ -88,7 +88,7 @@
 	});
 	
 	$('ul.nav-tabs li a').click(function(e) {
-		var device_id = $('.option_id:eq(0)').attr('value'),
+		var device_id = $(this).attr('data-type'),
 			module_id = $(this).attr('value'),
 			scale = '1hour',
 			type = 'min_temp,max_temp',
@@ -137,7 +137,7 @@
 		} else {
 			var current_scale = '3hours';
 		}
-		var device_id = $('.option_id:eq(0)').attr('value'),
+		var device_id = $('ul.nav-tabs li.active a').attr('data-type'),
 			module_id = $('ul.nav-tabs li.active a').attr('value'),
 			type = 'min_temp,max_temp',
 			limit = '1024',
@@ -203,7 +203,7 @@
 				var current_scale = '3hours';
 			}
 		}
-		var device_id = $('.option_id:eq(0)').attr('value'),
+		var device_id = $('ul.nav-tabs li.active a').attr('data-type'),
 			module_id = module_id = $('ul.nav-tabs li.active a').attr('value'),
 			type = 'min_' + this.id + ',max_' + this.id + '',
 			subtitle = this.name;
