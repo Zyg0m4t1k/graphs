@@ -6,5 +6,7 @@
 	"author" : "zyg0m4t1k",
 	"require" : "3.0",
 	"display" : "panel",
-	"category" : "monitoring"
+	"category" : "monitoring",
+	"changelog" : "https://zyg0m4t1k.github.io/graphs/#language#/changelog",
+	"documentation" : "https://zyg0m4t1k.github.io/graphs/#language#/"	
 }
