@@ -10,9 +10,6 @@ Configuration
 
 Il faut télécharger le plugin sur le market. 
 
-![graphs_icon](../images/graphs_icon.png)
-
-
 
 Après l'avoir activer il faut ensuite aller dans Plugins/Gestions des plugins et cliquer sur l'icône du plugin
 
@@ -28,7 +25,6 @@ Pour voir les informations.
 ![netatmo1](../images/netatmo1.png)
 
 
-image::../images/netatmo1.png[align="center"]
 
 Et ainsi visualiser les données Netatmo sous forme de graphique
 
