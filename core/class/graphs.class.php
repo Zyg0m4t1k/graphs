@@ -56,33 +56,35 @@ class graphs extends eqLogic {
 		log::add('graphs','debug', 'infostation: ' . print_r($data['devices'],true));
 		$array = array();
 		foreach($data['devices'] as $device) {
-			$eqLogic = eqLogic::byLogicalId($device['_id'], 'graphs');
-			if (!is_object($eqLogic)) {
-				$eqLogic = new graphs();
-			}
-			$eqLogic->setEqType_name('graphs');
-			$eqLogic->setIsEnable(1);
-			$eqLogic->setName($device['station_name']);
-			$eqLogic->setLogicalId($device['_id']);
-			$eqLogic->setConfiguration('type', 'station');
-			$eqLogic->setConfiguration('deviceId', $device['_id']);
-			$eqLogic->setCategory('heating', 1);
-			$eqLogic->setIsVisible(0);
-			$eqLogic->save();
-			if (count($device['modules']) >0) {
-				foreach ($device['modules'] as $module) {
-					$eqLogic = eqLogic::byLogicalId($module['_id'], 'graphs');
-					if (!is_object($eqLogic)) {
-						$eqLogic = new graphs();
+			if($device['type'] == "NAMain") {
+				$eqLogic = eqLogic::byLogicalId($device['_id'], 'graphs');
+				if (!is_object($eqLogic)) {
+					$eqLogic = new graphs();
+				}
+				$eqLogic->setEqType_name('graphs');
+				$eqLogic->setIsEnable(1);
+				$eqLogic->setName($device['station_name']);
+				$eqLogic->setLogicalId($device['_id']);
+				$eqLogic->setConfiguration('type', 'station');
+				$eqLogic->setConfiguration('deviceId', $device['_id']);
+				$eqLogic->setCategory('heating', 1);
+				$eqLogic->setIsVisible(0);
+				$eqLogic->save();
+				if (count($device['modules']) >0) {
+					foreach ($device['modules'] as $module) {
+						$eqLogic = eqLogic::byLogicalId($module['_id'], 'graphs');
+						if (!is_object($eqLogic)) {
+							$eqLogic = new graphs();
+						}
+						$eqLogic->setEqType_name('graphs');
+						$eqLogic->setIsEnable(1);
+						$eqLogic->setName($module['module_name']);
+						$eqLogic->setLogicalId($module['_id']);
+						$eqLogic->setConfiguration('deviceId', $device['_id']);
+						$eqLogic->setCategory('heating', 1);
+						$eqLogic->setIsVisible(0);
+						$eqLogic->save();
 					}
-					$eqLogic->setEqType_name('graphs');
-					$eqLogic->setIsEnable(1);
-					$eqLogic->setName($module['module_name']);
-					$eqLogic->setLogicalId($module['_id']);
-					$eqLogic->setConfiguration('deviceId', $device['_id']);
-					$eqLogic->setCategory('heating', 1);
-					$eqLogic->setIsVisible(0);
-					$eqLogic->save();
 				}
 			}
 		}
