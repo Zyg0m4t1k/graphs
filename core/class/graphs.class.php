@@ -150,7 +150,7 @@ class graphs extends eqLogic {
 	}
 	
 	
-	public function getStatus($status) {
+	public function getSignalStatus($status) {
 		if($status >= 90) return 'signal_verylow.png';
 		if($status >= 80) return 'signal_low.png';
 		if($status >= 70) return 'signal_medium.png';
@@ -256,7 +256,7 @@ class graphs extends eqLogic {
 				log::add('graphs','debug', '----------------------------------------------');
 				log::add('graphs','debug', 'conf: ' . $module->getConfiguration('rf_status'));
 				log::add('graphs','debug', '----------------------------------------------');
-				$data_module['rf_status'] = self::getStatus($module->getConfiguration('rf_status'));
+				$data_module['rf_status'] = self::getSignalStatus($module->getConfiguration('rf_status'));
 			}
 			
 		} else {
@@ -391,5 +391,3 @@ class graphsCmd extends cmd {
 
     /*     * **********************Getteur Setteur*************************** */
 }
-
-?>
